@@ -1,6 +1,9 @@
 from datetime import datetime
 
 from django.http import HttpResponse
+from django.views.generic import ListView, DetailView
+
+from .models import Post
 
 
 def index(request):
@@ -14,3 +17,18 @@ def index(request):
     </html>
     """
     return HttpResponse(html)
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = "post/index.html"
+    context_object_name = "posts"
+    ordering = ["-created_at"]
+    paginate_by = 10
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "post/detail.html"
+    context_object_name = "post"
+    pk_url_kwarg = "pk"
